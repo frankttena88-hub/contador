@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Caja Rápido</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #000000; color: #ffffff; text-align: center; padding: 12px; margin: 0; user-select: none; }
+        h2 { margin: 10px 0 5px 0; font-size: 20px; color: #00ffb3; text-transform: uppercase; letter-spacing: 1px; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; padding-bottom: 10px; }
+        .card { background: #121212; border-radius: 12px; padding: 10px; border: 1px solid #222; display: flex; flex-direction: column; justify-content: space-between; height: 110px; box-sizing: border-box; }
+        .info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
+        .name { font-size: 16px; font-weight: bold; color: #ffffff; text-align: left; }
+        .clics { font-size: 11px; color: #888; background: #222; padding: 2px 6px; border-radius: 20px; }
+        .total { font-size: 22px; font-weight: 800; color: #00ffb3; margin: 2px 0 6px 0; text-align: left; }
+        .btn { background: #1e1e1e; color: #ffffff; border: 1px solid #333; padding: 10px; border-radius: 8px; font-size: 15px; font-weight: bold; width: 100%; cursor: pointer; transition: background 0.1s; -webkit-tap-highlight-color: transparent; }
+        .btn:active { background: #00ffb3; color: #000; border-color: #00ffb3; }
+        #panel-historial { margin-top: 15px; background: #121212; border-top: 2px solid #222; padding: 12px; text-align: left; border-radius: 12px 12px 0 0; }
+        .header-hist { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        #panel-historial h4 { margin: 0; color: #00ffb3; font-size: 14px; text-transform: uppercase; }
+        .clear-btn { background: #ff3b30; color: white; border: none; padding: 4px 8px; font-size: 11px; border-radius: 4px; font-weight: bold; }
+        #log { max-height: 180px; overflow-y: auto; font-family: monospace; font-size: 12px; color: #aaa; line-height: 1.5; }
+    </style>
+</head>
+<body>
+
+    <h2>Registro de Ventas</h2>
+    
+    <div class="grid">
+        <!-- 1. t -->
+        <div class="card">
+            <div class="info"><span class="name">t</span><span id="cli-t" class="clics">0</span></div>
+            <div class="total" id="tot-t">$0</div>
+            <button class="btn" onclick="registrar('t', 't', 107)">+107</button>
+        </div>
+        <!-- 2. e-m -->
+        <div class="card">
+            <div class="info"><span class="name">e-m</span><span id="cli-em" class="clics">0</span></div>
+            <div class="total" id="tot-em">$0</div>
+            <button class="btn" onclick="registrar('em', 'e-m', 117)">+117</button>
+        </div>
+        <!-- 3. p-ps -->
+        <div class="card">
+            <div class="info"><span class="name">p-ps</span><span id="cli-pps" class="clics">0</span></div>
+            <div class="total" id="tot-pps">$0</div>
+            <button class="btn" onclick="registrar('pps', 'p-ps', 122)">+122</button>
+        </div>
+        <!-- 4. s -->
+        <div class="card">
+            <div class="info"><span class="name">s</span><span id="cli-s" class="clics">0</span></div>
+            <div class="total" id="tot-s">$0</div>
+            <button class="btn" onclick="registrar('s', 's', 36)">+36</button>
+        </div>
+        <!-- 5. bt -->
+        <div class="card">
+            <div class="info"><span class="name">bt</span><span id="cli-bt" class="clics">0</span></div>
+            <div class="total" id="tot-bt">$0</div>
+            <button class="btn" onclick="registrar('bt', 'bt', 29)">+29</button>
+        </div>
+        <!-- 6. t2 -->
+        <div class="card">
+            <div class="info"><span class="name">t2</span><span id="cli-t2" class="clics">0</span></div>
+            <div class="total" id="tot-t2">$0</div>
+            <button class="btn" onclick="registrar('t2', 't2', 120)">+120</button>
+        </div>
+        <!-- 7. t3 -->
+        <div class="card">
+            <div class="info"><span class="name">t3</span><span id="cli-t3" class="clics">0</span></div>
+            <div class="total" id="tot-t3">$0</div>
+            <button class="btn" onclick="registrar('t3', 't3', 132)">+132</button>
+        </div>
+        <!-- 8. j -->
+        <div class="card">
+            <div class="info"><span class="name">j</span><span id="cli-j" class="clics">0</span></div>
+            <div class="total" id="tot-j">$0</div>
+            <button class="btn" onclick="registrar('j', 'j', 93)">+93</button>
+        </div>
+        <!-- 9. ag -->
+        <div class="card">
+            <div class="info"><span class="name">ag</span><span id="cli-ag" class="clics">0</span></div>
+            <div class="total" id="tot-ag">$0</div>
+            <button class="btn" onclick="registrar('ag', 'ag', 98)">+98</button>
+        </div>
+        <!-- 10. jm -->
+        <div class="card">
+            <div class="info"><span class="name">jm</span><span id="cli-jm" class="clics">0</span></div>
+            <div class="total" id="tot-jm">$0</div>
+            <button class="btn" onclick="registrar('jm', 'jm', 30)">+30</button>
+        </div>
+        <!-- 11. 1p -->
+        <div class="card">
+            <div class="info"><span class="name">1p</span><span id="cli-1p" class="clics">0</span></div>
+            <div class="total" id="tot-1p">$0</div>
+            <button class="btn" onclick="registrar('1p', '1p', 65)">+65</button>
+        </div>
+        <!-- 12. 1/2p -->
+        <div class="card">
+            <div class="info"><span class="name">1/2p</span><span id="cli-2p" class="clics">0</span></div>
+            <div class="total" id="tot-2p">$0</div>
+            <button class="btn" onclick="registrar('2p', '1/2p', 45)">+45</button>
+        </div>
+    </div>
+
+    <div id="panel-historial">
+        <div class="header-hist">
+            <h4>Historial Reciente</h4>
+            <button class="clear-btn" onclick="borrarHistorial()">Reiniciar Caja</button>
+        </div>
+        <div id="log"></div>
+    </div>
+
+    <script>
+        let BD = JSON.parse(localStorage.getItem('caja_rapida')) || {
+            t: { clics: 0, total: 0 }, em: { clics: 0, total: 0 }, pps: { clics: 0, total: 0 },
+            s: { clics: 0, total: 0 }, bt: { clics: 0, total: 0 }, t2: { clics: 0, total: 0 },
+            t3: { clics: 0, total: 0 }, j: { clics: 0, total: 0 }, ag: { clics: 0, total: 0 },
+            jm: { clics: 0, total: 0 }, '1p': { clics: 0, total: 0 }, '2p': { clics: 0, total: 0 }
+        };
+        let historialHTML = localStorage.getItem('historial_texto') || '';
+
+        window.onload = function() {
+            for (let key in BD) {
+                if(document.getElementById(`cli-${key}`)) {
+                    document.getElementById(`cli-${key}`).innerText = BD[key].clics;
+                    document.getElementById(`tot-${key}`).innerText = `$${BD[key].total}`;
+                }
+            }
+            document.getElementById('log').innerHTML = historialHTML;
+        };
+
+        function registrar(id, nombre, valor) {
+            BD[id].clics += 1;
+            BD[id].total += valor;
+            
+            document.getElementById(`cli-${id}`).innerText = BD[id].clics;
+            document.getElementById(`tot-${id}`).innerText = `$${BD[id].total}`;
+            
+            let ahora = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+            let log = document.getElementById('log');
+            
+            let nuevaLinea = `[${ahora}] ${nombre} (+${valor}) | Total: $${BD[id].total}<br>`;
+            log.innerHTML = nuevaLinea + log.innerHTML;
+            
+            localStorage.setItem('caja_rapida', JSON.stringify(BD));
+            localStorage.setItem('historial_texto', log.innerHTML);
+            
+            if (navigator.vibrate) navigator.vibrate(40);
+        }
+
+        function borrarHistorial() {
+            if (confirm("¿Seguro que quieres borrar todos los contadores a $0?")) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

@@ -148,10 +148,28 @@
             br: { clics: 0, total: 0 }
         };
 
-        let BD = JSON.parse(localStorage.getItem('caja_rapida')) || JSON.parse(JSON.stringify(BD_INICIAL));
-        let historialLogs = JSON.parse(localStorage.getItem('caja_rapida_logs')) || [];
+        let BD;
+        let historialLogs;
 
-        // Forzar actualización inicial al cargar
+        // SISTEMA ANTIFALLOS: Detecta memoria vieja corrompida y la limpia en el acto
+        try {
+            const copiaLocal = localStorage.getItem('caja_rapida');
+            const logsLocales = localStorage.getItem('caja_rapida_logs');
+            
+            BD = copiaLocal ? JSON.parse(copiaLocal) : JSON.parse(JSON.stringify(BD_INICIAL));
+            historialLogs = logsLocales ? JSON.parse(logsLocales) : [];
+            
+            // Verifica que la memoria contenga las llaves necesarias, si no, fuerza el reinicio
+            if (BD && !BD.t) { 
+                throw new Error("Estructura antigua detectada"); 
+            }
+        } catch (e) {
+            localStorage.clear();
+            BD = JSON.parse(JSON.stringify(BD_INICIAL));
+            historialLogs = [];
+        }
+
+        // Mostrar datos en pantalla al cargar
         actualizarPantalla();
 
         function procesar(id, nombre, valor) {
@@ -165,21 +183,3 @@
                     BD[id].total -= valor;
                     agregarLog(`- $${valor} a ${nombre} (Corrección)`);
                 } else {
-                    alert("No puedes restar si el producto está en ceros.");
-                }
-                regresarAModoSuma(); 
-            }
-
-            guardarDatos();
-            actualizarPantalla();
-        }
-
-        function alternarModoResta() {
-            modoSuma = !modoSuma;
-            const indicador = document.getElementById('indicador-modo');
-            const botonResta = document.getElementById('toggle-resta');
-            const tarjetas = document.querySelectorAll('.card');
-
-            if (!modoSuma) {
-                indicador.textContent = "Modo Actual: Restando (Corrección)";
-
